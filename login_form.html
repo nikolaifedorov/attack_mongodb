@@ -14,12 +14,19 @@
   				$scope.login = function () {
 	  				var req = $http({
 		  				method: 'POST',
-              type: "json",
   						url: '/login',
-    					data: {
-		  					username: JSON.parse(this.user),
-			  				password: JSON.parse(this.pass)
-				  		}
+    				// 	data: {
+		  				// 	username: JSON.parse(this.user),
+			  			// 	password: JSON.parse(this.pass)
+				  		// }
+              data: JSON.stringify({
+                "username": {
+                  "$gt": ""
+                },
+                "password": {
+                  "$gt": ""
+                }
+              })
 					  });
 
 	  				var self = this;
