@@ -2,31 +2,32 @@
   <html>
 
 	  <head>
-		
-		  <script src="http//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
+
+		  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.js"></script>
 
   		<script>
 			  var ng = angular.module('ng')
 
     		ng.controller('Login', function ($scope, $http) {
 		  		$scope.isAuthenticated = false;
-  
+
   				$scope.login = function () {
 	  				var req = $http({
 		  				method: 'POST',
-  						url: '/',
+              type: "json",
+  						url: '/login',
     					data: {
-		  					username: this.user,
-			  				password: this.pass
+		  					username: JSON.parse(this.user),
+			  				password: JSON.parse(this.pass)
 				  		}
 					  });
-					  
+
 	  				var self = this;
-  
+
   					req.then(
 	  					function (event) {
 		  					self.isAuthenticated = true;
-  							self.message = event.data.message;
+  							self.message = event.data;
   							self.$apply();
 	  					},
   						function (event) {
@@ -37,9 +38,9 @@
 					  );
 				  };
 			  });
-			
+
 			</script>
-		
+
 		</head>
 
 
@@ -47,18 +48,18 @@
   	<body ng-app>
   		<div ng-controller="Login">
   			<h1 ng-show="!isAuthenticated">No Login</h1>
-  
+
   			<p ng-show="!isAuthenticated">I Dare you! I double Dare you!!</p>
-  
+
   			<input ng-show="!isAuthenticated" ng-model="user" type="text" name="user" autocomplete="off">
   			<input ng-show="!isAuthenticated" ng-model="pass" type="password" name="pass" autocomplete="off">
-  
+
   			<button ng-show="!isAuthenticated" ng-click="login()">Login</button>
-  
+
   			<p ng-show="message">{{ message }}</p>
-  		
+
   		</div>
   	</body>
-  	
+
 	<html>
-	
+

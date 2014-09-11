@@ -1,17 +1,27 @@
 import pymongo
 import bottle
+from bottle import route
+from bottle import static_file
 import sys
+import json
+
 import cgi
 import string
 
+
+@route('/')
+def index():
+  return static_file('login_form.html', root='./')
 
 
 #handles a login request
 @bottle.post('/login')
 def process_login():
-  username = bottle.request.forms.get("username")
-  password = bottle.request.forms.get("password")
-  
+  username = bottle.request.json.get("username")
+  password = bottle.request.json.get("password")
+
+  print(bottle.request)
+
   print "user submitted ", username, "pass ", password
 
 
@@ -22,9 +32,10 @@ def process_login():
   collection = db.users         # specify the collection
 
   try:
-    iter = collection.find({})
-    for item in iter:
-      return str(item) + "\n"
+    item = collection.find_one({ "username": username, "password": password })
+    print(str(item))
+    # for item in iter:
+    return json.dumps(str(item))
   except:
     print "Error trying to read collection:", sys.exc_info()[0]
 
